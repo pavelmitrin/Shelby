@@ -1,6 +1,10 @@
 {
 	"SHR": [
-		"category Subtitle",
+		{
+			"categoryName": "",
+			"categorySubtitle": "",
+			"categoryPicture": ""
+		},
 		{
 			"name": "",
 			"article": "",
@@ -15,7 +19,5 @@
 			"options": "",
 			"descriptions": ""
 		}
-	],
-	"SHLP": "fdvfd",
-	"SHID": ""
+	]
 }
