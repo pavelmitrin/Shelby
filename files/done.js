@@ -38,7 +38,9 @@ let done = {};
 function CategoryOptions(name, subtitle, pictute) {
 	this.categoryName = '',
 	this.categorySubtitle = '',
-	this.categoryPictute = ''
+	this.categoryPictute = '',
+	this.categoryPageTitle = '',
+	this.categoryPageInfo = []
 }
 function FullProduct(article) {
 	this.name = '';
@@ -46,6 +48,7 @@ function FullProduct(article) {
 	this.pictures = [];
 	this.options = [];
 	this.description = [];
+	this.status = '';
 }
 
 
@@ -93,7 +96,7 @@ categoryName.forEach(el => {
 			}
 
 			if (e.search(category.article) != -1) {
-				if (/.?info.txt/.test(e) !== true && category.article != undefined) {
+				if (/.?info.txt/.test(e) !== true && category.article != undefined && e.search(/.+\.webp/) != -1) {
 					category.pictures.push(e);
 				}
 				
@@ -131,6 +134,14 @@ categoryName.forEach(el => {
 						category.description.push(ele); 
 					})
 				}
+
+				let statusPage = data.match(/^status: true|false/gm);
+				if (statusPage) {					
+					statusPage = statusPage[0].replace(/status: /, '');
+					category.status = statusPage;
+				}
+				
+				
 				
 			}
 		})
@@ -143,18 +154,46 @@ categoryName.forEach(el => {
 		if (elem.search(el) !== -1) {
 			let categInfo = fs.readFileSync(`${elem}`, 'utf8',);
 			let name = categInfo.match(/.+,/g);
-			name = name[0].replace(/categoryName: /, '');
-			name = name.replace(/,/g, '');
-			done[`${el}`][0].categoryName = name;
+			if (name != null) {
+				name = name[0].replace(/categoryName: /, '');
+				name = name.replace(/,/g, '');
+				done[`${el}`][0].categoryName = name;
+			}
+			
 
 			let subtitle = categInfo.match(/^categorySubtitle:.+/gm);
-			subtitle = subtitle[0].replace(/categorySubtitle:/, '')
-			done[`${el}`][0].categorySubtitle = subtitle;
+			if (subtitle != null) {
+				subtitle = subtitle[0].replace(/categorySubtitle:/, '');
+				done[`${el}`][0].categorySubtitle = subtitle;
+			}
+			
+			
+			let pageTitle = categInfo.match(/^categoryPageTitle:.+/gm)
+			if (pageTitle !== null) {
+				pageTitle = pageTitle[0].replace(/categoryPageTitle:/, '');
+				pageTitle = pageTitle.replace(/,/, '');
+				done[`${el}`][0].categoryPageTitle = pageTitle;
+			}
+			
+
+
+			let pageInfo = categInfo.match(/^categoryPageInfo: \[.+\]/gm);
+			if (pageInfo != null) {
+				pageInfo = pageInfo[0].replace(/categoryPageInfo: \[/, '');
+				pageInfo = pageInfo.replace(']', '');
+				pageInfo = pageInfo.match(/'.+?'/gm);
+				pageInfo.forEach(ele => {
+						ele = ele.replace(/'/g, ''),
+						done[`${el}`][0].categoryPageInfo.push(ele);
+					})
+			}
+
+			
 			
 		}
 	})
 	PathFromStart.forEach(elem => {
-		let reg = new RegExp(`\.\?${el}\/cover\.jpg`); // надо будет заменить на webp
+		let reg = new RegExp(`\.\?${el}\/cover\.webp`); // надо будет заменить на webp
 		if (reg.test(elem) === true) {
 			done[`${el}`][0].categoryPictute = elem;
 		};
@@ -162,13 +201,23 @@ categoryName.forEach(el => {
 });
 
 // create Pages
+function catalogPageSubtitle(key, done) {
+	function createEl(el) {
+		return `<p>${el}</p>`
+	}
+	let list = ``;
+	done[`${key}`][0].categoryPageInfo.forEach(el => {
+		list += createEl(el);
+	})
+	return list;
+}
 function catalogItem(key, done) {
 	let ae = ``;
 	for (let index = 1; index < done[`${key}`].length; index++) {
 		ae += `<div class="products__item">
 				<a href="#product" class="product popup-link">
 				<div class="product__img">
-					<img src="../img/catalog/${key}/${done[`${key}`][index].article}/1.jpg" alt="">
+					<img src="../img/catalog/${key}/${done[`${key}`][index].article}/1.webp" alt="">
 				</div>
 				<div class="product__text">
 					<h4 class="product_title">${done[`${key}`][index].name}</h4>
@@ -180,8 +229,7 @@ function catalogItem(key, done) {
 		</div>`;
 	}
 	return ae;
-	}
-
+}
 function catalogCategory (key, done) {
 	return `<!DOCTYPE html>
 	<html lang="ru">
@@ -211,36 +259,24 @@ function catalogCategory (key, done) {
 				</div>
 				<nav class="header__menu">
 					<div class="header__logo">
-						<a href="../index.html" class="header__link"><img src="../img/logo.png" alt=""></a>
+						<a href="../index.html" class="header__link"><img src="../img/logo.webp" alt=""></a>
 					</div>
 					<div class="header__list">
 						<div class="header__item">
 							<h3 class="header__link">Компания</h3>
 							<div class="header__second-list">
 								<a href="../company.html" class="header__second-link">О компании</a>
-								<a href="#" class="header__second-link">Новости</a>
-								<a href="#" class="header__second-link">Проекты</a>
 							</div>
 						</div>
 						<div class="header__item">
 							<h3 class="header__link">Каталог</h3>
 							<div class="header__second-list" id="headerCatalog">
 								<a href="../catalog.html" class="header__second-link">ВЕСЬ КАТАЛОГ</a>
-								<a href="#" class="header__second-link">ГОТОВЫЕ РЕШЕНИЯ</a>
-								<a href="#" class="header__second-link">ОБОРУДОВАНИЕ В НАЛИЧИИ</a>
+								<a href="../equipment.html" class="header__second-link">ОБОРУДОВАНИЕ В НАЛИЧИИ</a>
 								
 							</div>
 						</div>
-						<div class="header__item">
-							<h3 class="header__link">Дополнительное оборудование</h3>
-							<div class="header__second-list">
-								<a href="#" class="header__second-link">О компании</a>
-								<a href="#" class="header__second-link">О компании</a>
-								<a href="#" class="header__second-link">О компании</a>
-								<a href="#" class="header__second-link">О компании</a>
-								<a href="#" class="header__second-link">О компании</a>
-							</div>
-						</div>
+						
 						<div class="header__item">
 							<a href="../partners.html">
 								<h3 class="header__link header__second-link">Для проектировщиков и госучреждений</h3>
@@ -251,7 +287,7 @@ function catalogCategory (key, done) {
 							<div class="header__second-list">
 								<a href="../delivery.html" class="header__second-link">Доставка</a>
 								<a href="../mounting.html" class="header__second-link">Монтаж</a>
-								<a href="#" class="header__second-link">Материалы</a>
+								/* <a href="#" class="header__second-link">Материалы</a> */
 								<a href="../safety.html" class="header__second-link">Безопасность</a>
 							</div>
 						</div>
@@ -287,7 +323,7 @@ function catalogCategory (key, done) {
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="../index.html">Главная</a></li>
 							<li class="breadcrumb-item"><a href="../catalog.html">Каталог</a></li>
-							<li class="breadcrumb-item active" aria-current="page">Example</li>
+							<li class="breadcrumb-item active" aria-current="page">${done[key][0].categoryName}</li>
 						</ol>
 					</nav>
 				</div>
@@ -298,10 +334,9 @@ function catalogCategory (key, done) {
 				<section class="products">
 					<div class="container">
 						<div class="produsts__text">
-							<h2 class="products__title">Большие канатные комплексы «Шелби Ривер»</h2>
+							<h2 class="products__title">${done[key][0].categoryPageTitle}</h2>
 							<h3 class="products__subtitle">
-								<p>Серия «Шелби Ривер» – идеальное решение для больших игровых пространств в парках, скверах, на придомовых территориях. В моделях этой серии плоская или объемная канатная сетка с множеством игровых элементов занимает центральное место на игровой площадке.</p>
-								<p>С помощью канатных комплексов «Шелби Ривер» можно разнообразить занятия спортом, сделать игру увлекательной и интересной, помочь детям проявить фантазию.</p>
+								${catalogPageSubtitle(key, done)}
 							</h3>
 						</div>
 						<div class="products__prompt">
@@ -400,7 +435,7 @@ function catalogCategory (key, done) {
 	</section>
 	
 	<section class="feedback">
-		<img src="../img/1.jpg" alt="" class="section__bg">
+		<img src="../img/1.webp" alt="" class="section__bg">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
@@ -461,49 +496,11 @@ function catalogCategory (key, done) {
 						<a href="#" class="footer-links__link">Контакты</a>
 						<a href="#" class="footer-links__link">Карта сайта</a>
 					</div>
-					<div class="col-12 col-sm-6 col-lg-3 footer-links__row">
+					<div class="col-12 col-sm-6 col-lg-3 footer-links__row" id="footerCatalog">
 						<h4 class="footer-links__title">Оборудование</h4>
-						<a href="#" class="footer-links__link footer-links__link-active">Оборудование в наличии</a>
-						<a href="#" class="footer-links__link">Ривер</a>
-						<a href="#" class="footer-links__link">Плэй</a>
-						<a href="#" class="footer-links__link">Атом</a>
-						<a href="#" class="footer-links__link">Скат</a>
-						<a href="#" class="footer-links__link">НЛО</a>
-						<a href="#" class="footer-links__link">Модуль</a>
-						<a href="#" class="footer-links__link">Кубикс</a>
-						<a href="#" class="footer-links__link">Глобус</a>
-						<a href="#" class="footer-links__link">Пирамиды</a>
-						<a href="#" class="footer-links__link">Динамикс</a>
-						<a href="#" class="footer-links__link">Легно (Робиния)</a>
-						<a href="#" class="footer-links__link">Лаго</a>
-						<a href="#" class="footer-links__link">Инди</a>
-						<a href="#" class="footer-links__link">Эни</a>
-						<a href="#" class="footer-links__link">Луп</a>
-						<a href="#" class="footer-links__link">Апекс</a>
-						<a href="#" class="footer-links__link">Форс</a>
-						<a href="#" class="footer-links__link">Монстерс</a>
-						<a href="#" class="footer-links__link">Вотер Вэйс</a>
-						<a href="#" class="footer-links__link">Арки</a>
+						<a href="../equipment.html" class="footer-links__link footer-links__link-active">Оборудование в наличии</a>
 					</div>
-					<div class="col-12 col-sm-6 col-lg-3 footer-links__row">
-						<h4 class="footer-links__title">Доп. оборудование и материалы</h4>
-						<a href="#" class="footer-links__link">Качели</a>
-						<a href="#" class="footer-links__link">Карусели</a>
-						<a href="#" class="footer-links__link">Качалки на пружине</a>
-						<a href="#" class="footer-links__link">Качалки-балансиры</a>
-						<a href="#" class="footer-links__link">Додекаэдры</a>
-						<a href="#" class="footer-links__link">Воркаут</a>
-						<a href="#" class="footer-links__link">Резиновое покрытие</a>
-						<a href="#" class="footer-links__link">Тарзанки и монорельсы</a>
-						<a href="#" class="footer-links__link">Уличная мебель</a>
-						<a href="#" class="footer-links__link">Для партнёров</a>
-						<a href="#" class="footer-links__link">Готовые решения</a>
-						<a href="#" class="footer-links__link">Горки из нержавейки</a>
-						<a href="#" class="footer-links__link">Геопластика</a>
-						<a href="#" class="footer-links__link">Музыка и интерактив</a>
-						<a href="#" class="footer-links__link">Оптические иллюзии</a>
-						<a href="#" class="footer-links__link">Песочницы</a>
-					</div>
+					
 					<div class="col-12 col-sm-6 col-lg-3 footer-links__row">
 						<h4 class="footer-links__title">Подписаться на рассылку</h4>
 						<form action="#" method="post" class="footer-links__sending sending">
@@ -686,7 +683,7 @@ function catalogCategory (key, done) {
 			</div>
 		</div>
 	</div>
-			<div id="product" class="modal">
+	<div id="product" class="modal">
 		<div class="modal__dialog">
 			<div class="modal__head">
 				<a href="#" class="modal__close close-modal">
@@ -697,18 +694,7 @@ function catalogCategory (key, done) {
 				<div class="product__images">
 					<div class="swiper-wrapper">
 						<!-- Slides -->
-						<div class="swiper-slide" style="width:100%; height:100%;">
-							<img src="../img/catalog/SHR/SHR0001/1.jpg" alt="">
-						</div>
-						<div class="swiper-slide" style="width:100%; height:100%;">
-							<img src="../img/catalog/SHR/SHR0001/2.jpg" alt="">
-						</div>
-						<div class="swiper-slide" style="width:100%; height:100%;">
-							<img src="../img/catalog/SHR/SHR0001/3.jpg" alt="">
-						</div>
-						<div class="swiper-slide" style="width:100%; height:100%;">
-							<img src="../img/catalog/SHR/SHR0001/4.jpg" alt="">
-						</div>
+						
 					</div>
 					<!-- If we need navigation buttons -->
 					<div class="swiper-button-prev"></div>
@@ -722,15 +708,11 @@ function catalogCategory (key, done) {
 					<div class="desc__text">
 						<div class="desc__options">
 							<ul>
-								<li>Габаритные размеры: 11 460x11 325x2 770 мм</li>
-								<li>Возрастная группа: с 5 до 14 лет</li>
-								<li>Высота максимального падения: 2 770 мм</li>
-								<li>Размер зоны приземления: для сыпучих материалов – 16 160x16 025 мм, для синтетического покрытия – 16 160x16 025 мм</li>
+								
 							</ul>
 						</div>
 						<div class="desc__descriptions">
-							<p>Канатная конструкция «Шелби Ривер» для детских площадок. Габариты — 11 460x11 325x2 770 мм. Изготавливается из армированного 6-прядного каната диаметром 16 мм. Конструкция имеет различные игровые элементы: канатный переход в форме трубы, полосу препятствия с круглыми резиновыми сидениями, которые используются как ногоступы, а также канатную сетку для лазания в форме воронки.</p>
-							<p>Конструкция изготовлена из следующих материалов: металлическая рама из электросварных труб диаметрами 219х6 и 133х4,5 мм; канат армированный 6-прядный диаметром 16 мм из полипропиленовых нитей и стальной проволоки. Х-образные и Т-образные соединения каната цельнолитые, выполнены из полиамида (PA6), обжимные гильзы из алюминиевого сплава. Подвесные сиденья выполнены из термоэластопласта, армированного алюминиевой закладной. Металлическая рама конструкции оцинкованная, с порошковым покрытием.</p>
+							
 						</div>
 					</div>
 				</div>
@@ -754,26 +736,7 @@ function catalogCategory (key, done) {
 					<h3 class="cart__title">Ваш заказ</h3>
 	
 					<div class="cart__products">
-						<div class="cart__product">
-							<div class="cart__preview">
-								<img src="../img/catalog/SHR/SHR0001/1.jpg" alt="">
-							</div>
-							<div class="cart__inform">
-								<div class="cart__data">
-									<h4 class="cart__name">Игровой канатный комплекс</h4>
-									<h4 class="cart__article">Арт. SHR0001</h4>
-								</div>
-	
-								<div class="cart__amount">
-									<button id="amountPlus"><img src="../img/catalog/arrows_circle_plus.svg" alt=""></button>
-									<p class="amount__Score">1</p>
-									<button id="amountMinus"><img src="../img/catalog/arrows_circle_minus.svg" alt=""></button>
-								</div>
-	
-								<button class="cart__remove"><img src="../img/catalog/arrows_circle_remove.svg" alt=""></button>
-								
-							</div>
-						</div>
+						
 					</div>
 	
 					<div class="cart__form">
@@ -802,6 +765,47 @@ function catalogCategory (key, done) {
 			</div>
 		</div>
 	</div>
+	<div class="connection">
+	<div class="connection__call">
+		<div class="connection__call-form hidden">
+			<form action="#" class="call__form" id="connectionCall">
+				<h3 class="call__form-title">Заполните форму или позвоните по номеру указанному ниже</h3>
+				<p class="call__form-subtitle">Наши менеджеры проконсультируют вас по любой из наших услуг.</p>
+				<div class="call__form-input">
+					<input type="tel" required id="connectionCallTel">
+					<button id="callFormSubmit">Заказать звонок</button>
+				</div>
+				<div class="call__form-link">
+					<a href="tel:+74993905007">+7 (499) 390-50-07</a>
+				</div>
+				<p class="call__form-agree">Нажимая на кнопку, вы даете согласие на обработку ваших персональных данных.</p>
+			</form>
+		</div>
+		<div class="connection__call-button btn-open">
+			<img src="../img/call.webp" alt="">
+		</div>
+	</div>
+	<div class="connection__chat">
+		<div class="connection__chat-connect chat hidden">
+			<a href="#" target="_blank" class="chat__mail">
+				<img src="../img/mail.svg" alt="">
+			</a>
+			<a href="#" target="_blank" class="chat__whatsapp">
+				<img src="../img/whatsapp.svg" alt="">
+			</a>
+			<a href="#" target="_blank" class="chat__telegram">
+				<img src="../img/telegramm.svg" alt="">
+			</a>
+		</div>
+		<div class="connection__chat-button btn-open">
+			<img src="../img/message.webp" alt="">
+		</div>
+	</div>
+</div>
+
+<div class="cart none" id="buyCart">
+	<a href="#buy" class="popup-link"><img src="../img/shoppingCart.svg" alt=""></a>
+</div>
 	
 			
 			
@@ -818,8 +822,8 @@ function catalogCategory (key, done) {
 	
 	</html>`
 };
-// /create Pages
-// console.log(done);
+
+
 
 fs.writeFile('./catalog.json', JSON.stringify(done), function (err) {
 	if (err) return console.log(err);

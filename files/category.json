@@ -3,7 +3,9 @@
 		{
 			"categoryName": "",
 			"categorySubtitle": "",
-			"categoryPicture": ""
+			"categoryPicture": "",
+			"categoryPageTitle": "",
+			"categoryPageInfo": []
 		},
 		{
 			"name": "",
