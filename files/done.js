@@ -735,12 +735,14 @@ function catalogCategory (key, done) {
 				<div class="shopping__cart cart">
 					<h3 class="cart__title">Ваш заказ</h3>
 	
-					<div class="cart__products">
-						
-					</div>
+					
 	
 					<div class="cart__form">
 						<form action="#" id="buyForm" class="form-buy">
+							<div class="cart__products">
+							
+							</div>
+
 							<div class="form-buy__item">
 								<label for="buyFormName">Ваше имя</label>
 								<input id="buyFormName" type="text" placeholder="Иван Смирнов">
