@@ -91,6 +91,11 @@ $("#connectionCallTel").click(function () {
 }).mask("+7 999 999 99 99");
 $("#formTel").mask("+7 999 999 99 99");
 
+$("#buyFormTel").click(function () {
+	$(this).setCursorPosition(3);
+}).mask("+7 999 999 99 99");
+$("#formTel").mask("+7 999 999 99 99");
+
 
 
 /* open buttons */
@@ -160,6 +165,7 @@ async function f() {
 						const body = document.querySelector('body');
 						const lockPadding = document.querySelectorAll('.lock-padding');
 						let unlock = true;
+						checkCart();
 
 						const timeout = 800;
 
@@ -252,6 +258,7 @@ async function f() {
 								body.style.paddingRight = '0px';
 								body.classList.remove('_lock');
 							}, timeout);
+							checkCart();
 						}
 
 						document.addEventListener('keydown', function (e) {
@@ -259,6 +266,7 @@ async function f() {
 								const popupActive = document.querySelector('.modal.open');
 								popupClose(popupActive);
 							}
+							checkCart();
 						});
 						(function () {
 							//Проверяем поддержку
@@ -671,7 +679,7 @@ async function f() {
 	}
 
 	function checkCart() {
-		if (buyList.length !== 0 && !buyPage.classList.contains('open')) {
+		if (buyList.length !== 0 ) { // buyPage.classList.contains('open')
 			buyIcon.classList.remove('none');
 		} else {
 			buyIcon.classList.add('none');

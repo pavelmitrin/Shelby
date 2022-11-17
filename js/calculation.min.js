@@ -49,9 +49,7 @@ function popupOpen(curentPopup) {
 		curentPopup.classList.add('open');
 
 		curentPopup.addEventListener('click', function (e) {
-			// console.log(e);
-			// console.log(e.target.getAttribute('src'));
-			if (!e.target.closest('.modal__content') && e.target.getAttribute('src') !== '../img/catalog/arrows_circle_remove.svg') {	//
+			if (!e.target.closest('.modal__content') && !e.target.classList.contains('cart__remove')) {	//
 				popupClose(e.target.closest('.modal'));
 			}
 		})
