@@ -165,7 +165,7 @@ async function f() {
 						const body = document.querySelector('body');
 						const lockPadding = document.querySelectorAll('.lock-padding');
 						let unlock = true;
-						checkCart();
+						// checkCart();
 
 						const timeout = 800;
 
@@ -205,9 +205,9 @@ async function f() {
 								curentPopup.classList.add('open');
 
 								curentPopup.addEventListener('click', function (e) {
-									// console.log(e);
+									// console.log(e.target);
 									// console.log(e.target.getAttribute('src'));
-									if (!e.target.closest('.modal__content') && e.target.getAttribute('src') !== '../img/catalog/arrows_circle_remove.svg') {	//
+									if (!e.target.closest('.modal__content') && e.target.getAttribute('src') !== '../img/catalog/arrows_circle_remove.svg' && !e.target.closest('button')) {	//
 										popupClose(e.target.closest('.modal'));
 									}
 								})
@@ -230,7 +230,7 @@ async function f() {
 									
 								}
 							}
-							checkCart();
+							// checkCart();
 						}
 						function bodyLock() {
 							const lockPaddingValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
@@ -451,7 +451,6 @@ async function f() {
 			}
 		}
 
-		
 	}
 
 	//	catalog product popup
@@ -601,10 +600,10 @@ async function f() {
 		checkCart();
 	}
 	function removeBuyProduct(e) {
-		if (e.target.classList.contains('cart__remove')) {
+		if (e.target.closest('button') !== null && e.target.closest('button').classList.contains('cart__remove')) {
 			const productRemove = e.target.closest('.cart__product');
-
-			const productRemoveArticle = productRemove.querySelector('.cart__article').textContent.replace(/Арт. /, '');
+			// console.log(productRemove);
+			const productRemoveArticle = productRemove.querySelector('.cart__article').value.replace(/Арт. /, '');
 			
 			buyList = buyList.filter((item) => item.article != productRemoveArticle);
 			saveToLocalStorage();
@@ -629,7 +628,7 @@ async function f() {
 				<div class="cart__inform">
 					<div class="cart__data">
 						<h4 class="cart__name">${product.name}</h4>
-						<h4 class="cart__article">Арт. ${product.article}</h4>
+						<input type="text"  class="cart__article" value="Арт. ${product.article}" readonly>
 					</div>
 	
 					<div class="cart__amount">
@@ -649,8 +648,8 @@ async function f() {
 	}
 	function changeCount(e) {
 		const tapProduct = e.target.closest('.cart__product');
-		const article = tapProduct.querySelector('.cart__article').textContent.replace(/Арт. /, '');
-		if (e.target.classList.contains('amountMinus')) {
+		const article = tapProduct.querySelector('.cart__article').value.replace(/Арт. /, '');
+		if (e.target.closest('button') !== null && e.target.closest('button').classList.contains('amountMinus')) {
 			
 			buyList.forEach((product) => {
 				if (product.article === article) {
@@ -665,7 +664,7 @@ async function f() {
 			buyList.forEach(product => renderBuyList(product));
 			
 		}
-		if (e.target.classList.contains('amountPlus')) {
+		if (e.target.closest('button') !== null && e.target.closest('button').classList.contains('amountPlus')) {
 			buyList.forEach((product) => {
 				if (product.article === article) {
 					product.count++;
@@ -690,3 +689,65 @@ async function f() {
 
 f();
 
+
+submitBuyForm();
+
+function submitBuyForm() {
+	const form = document.querySelector('#buyForm');
+	const btnSubmitForm = document.querySelector('#buyFormSubmit');
+
+	if (form) {
+		btnSubmitForm.addEventListener('click', (e) => {
+			let error = validateBuyForm();
+			if (error === 0) {
+				// form.submit();
+				e.preventDefault();
+			} else {
+				e.preventDefault();
+			}
+		})
+	}
+}
+
+function validateBuyForm() {
+	const form = document.querySelector('#buyForm');
+
+	let error = 0;
+	let inputFields = form.querySelectorAll('._req');
+
+	for (let i = 0; i < inputFields.length; i++) {
+		const el = inputFields[i];
+		formRemoveError(el);
+
+		if (el.id == 'buyFormName') {
+			if (el.value == '') {
+				formAddError(el);
+				error++;
+			}
+		} else if (el.id == 'buyFormOrgan') {
+			if (el.value == '') {
+				formAddError(el);
+				error++;
+			}
+		} else if (el.id == 'buyFormEmail') {
+			if (emailTest(el)) {
+				formAddError(el);
+				error++;
+			}
+		}
+
+	}
+	return error;
+}
+
+function formAddError(el) {
+	el.parentElement.classList.add('_error');
+	el.classList.add('_error');
+}
+function formRemoveError(el) {
+	el.parentElement.classList.remove('_error');
+	el.classList.remove('_error');
+}
+function emailTest(el) {
+	return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(el.value);
+}

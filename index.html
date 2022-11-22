@@ -5,12 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="styles/fonts.min.css?_v=20221117191410">
-	<script async src="js/jquery.min.js?_v=20221117191410"></script>
+	<link rel="stylesheet" href="styles/fonts.min.css?_v=20221123011755">
+	<script async src="js/jquery.min.js?_v=20221123011755"></script>
 	<!-- libs -->
-	<link rel="stylesheet" href="styles/bootstrap-grid.min.css?_v=20221117191410">
-	<link rel="stylesheet" href="styles/swiper-bundle.min.css?_v=20221117191410">
-	<link rel="stylesheet" href="styles/style.min.css?_v=20221117191410">
+	<link rel="stylesheet" href="styles/bootstrap-grid.min.css?_v=20221123011755">
+	<link rel="stylesheet" href="styles/swiper-bundle.min.css?_v=20221123011755">
+	<link rel="stylesheet" href="styles/style.min.css?_v=20221123011755">
 	<!-- Media -->
 	<title>Главная</title>
 </head>
@@ -73,12 +73,12 @@
 					<div class="header__item">
 						<h3 class="header__link">Контакты</h3>
 						<div class="header__second-list">
-							<a href="tel:+74993905007 " class="header__second-link" target="_blank">+7 (499) 390-50-07 </a>
-							<a href="mailto:hello@shelby-ltd.ru" class="header__second-link"
+							<a href="tel:+ " class="header__second-link" target="_blank">+7 (999) 999-99-99 </a>
+							<a href="mailto:" class="header__second-link"
 								target="_blank">hello@shelby-ltd.ru</a>
 							<a href="#" class="header__second-link">Заказать звонок</a>
-							<a href="https://wa.me/79258716516" class="header__second-link" target="_blank">WhatsApp</a>
-							<a href="https://t.me/shelbyplay" class="header__second-link" target="_blank">Telegram</a>
+							<a href="https://wa.me/" class="header__second-link" target="_blank">WhatsApp</a>
+							<a href="https://t.me/" class="header__second-link" target="_blank">Telegram</a>
 						</div>
 					</div>
 				</div>
@@ -446,8 +446,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12 col-lg-6">
-					<a href="tel:+74993905007" class="tel">+7 (499) 390-50-07</a>
-					<a href="mailto:hello@shelby-ltd.ru" class="mail">hello@shelby-ltd.ru</a>
+					<a href="tel:+" class="tel">+7 (999) 999-99-99</a>
+					<a href="mailto:" class="mail">hello@shelby-ltd.ru</a>
 					<p>Работаем с понедельника по пятницу с 09.00 до 18.00</p>
 				</div>
 			</div>
@@ -474,25 +474,7 @@
 					<a href="equipment.html" class="footer-links__link footer-links__link-active">Оборудование в наличии</a>
 					
 				</div>
-				<!-- <div class="col-12 col-sm-6 col-lg-3 footer-links__row">
-					<h4 class="footer-links__title">Доп. оборудование и материалы</h4>
-					<a href="#" class="footer-links__link">Качели</a>
-					<a href="#" class="footer-links__link">Карусели</a>
-					<a href="#" class="footer-links__link">Качалки на пружине</a>
-					<a href="#" class="footer-links__link">Качалки-балансиры</a>
-					<a href="#" class="footer-links__link">Додекаэдры</a>
-					<a href="#" class="footer-links__link">Воркаут</a>
-					<a href="#" class="footer-links__link">Резиновое покрытие</a>
-					<a href="#" class="footer-links__link">Тарзанки и монорельсы</a>
-					<a href="#" class="footer-links__link">Уличная мебель</a>
-					<a href="#" class="footer-links__link">Для партнёров</a>
-					<a href="#" class="footer-links__link">Готовые решения</a>
-					<a href="#" class="footer-links__link">Горки из нержавейки</a>
-					<a href="#" class="footer-links__link">Геопластика</a>
-					<a href="#" class="footer-links__link">Музыка и интерактив</a>
-					<a href="#" class="footer-links__link">Оптические иллюзии</a>
-					<a href="#" class="footer-links__link">Песочницы</a>
-				</div> -->
+				
 				<div class="col-12 col-sm-6 col-lg-3 footer-links__row">
 					<h4 class="footer-links__title">Подписаться на рассылку</h4>
 					<form action="#" method="post" class="footer-links__sending sending">
@@ -749,19 +731,19 @@
 
 						<div class="form-buy__item">
 							<label for="buyFormName">Ваше имя</label>
-							<input id="buyFormName" type="text" placeholder="Иван Смирнов">
+							<input id="buyFormName" class="_req" type="text" placeholder="Иван Смирнов" required>
 						</div>
 						<div class="form-buy__item">
 							<label for="buyFormEmail">Почта</label>
-							<input id="buyFormEmail" type="email" placeholder="hello@shelby.com">
+							<input id="buyFormEmail" class="_req" type="email" placeholder="hello@shelby.com" required>
 						</div>
 						<div class="form-buy__item">
 							<label for="buyFormTel">Телефон</label>
-							<input id="buyFormTel" type="tel" placeholder="+7 000 000 00 00">
+							<input id="buyFormTel" class="_req" type="tel" placeholder="+7 000 000 00 00" required>
 						</div>
 						<div class="form-buy__item">
 							<label for="buyFormOrgan">Название организации</label>
-							<input id="buyFormOrgan" type="text" placeholder="ООО Шелби Плэйс">
+							<input id="buyFormOrgan" class="_req" type="text" placeholder="ООО Шелби Плэйс" required>
 						</div>
 
 						<button type="submit" id="buyFormSubmit">Заказать</button>
@@ -783,7 +765,7 @@
 					<button id="callFormSubmit">Заказать звонок</button>
 				</div>
 				<div class="call__form-link">
-					<a href="tel:+74993905007">+7 (499) 390-50-07</a>
+					<a href="tel:+">+7 (999) 999-99-99</a>
 				</div>
 				<p class="call__form-agree">Нажимая на кнопку, вы даете согласие на обработку ваших персональных данных.</p>
 			</form>
@@ -814,13 +796,13 @@
 	<a href="#buy" class="popup-link"><img src="img/shoppingCart.svg" alt=""></a>
 </div>
 	</div>
-	<script src="js/typed.min.js?_v=20221117191410"></script>
-	<script src="js/functions.min.js?_v=20221117191410"></script>
-<script src="js/swiper-bundle.min.js?_v=20221117191410"></script>
-<script src="js/burger.min.js?_v=20221117191410"></script>
-<script src="js/jquery.maskedinput.min.js?_v=20221117191410"></script>
-<script src="js/app.min.js?_v=20221117191410"></script>
-<script src="js/calculation.min.js?_v=20221117191410"></script>
+	<script src="js/typed.min.js?_v=20221123011755"></script>
+	<script src="js/functions.min.js?_v=20221123011755"></script>
+<script src="js/swiper-bundle.min.js?_v=20221123011755"></script>
+<script src="js/burger.min.js?_v=20221123011755"></script>
+<script src="js/jquery.maskedinput.min.js?_v=20221123011755"></script>
+<script src="js/app.min.js?_v=20221123011755"></script>
+<script src="js/calculation.min.js?_v=20221123011755"></script>
 
 </body>
 

@@ -49,7 +49,7 @@ function popupOpen(curentPopup) {
 		curentPopup.classList.add('open');
 
 		curentPopup.addEventListener('click', function (e) {
-			if (!e.target.closest('.modal__content') && !e.target.classList.contains('cart__remove')) {	//
+			if (!e.target.closest('.modal__content') && !e.target.classList.contains('cart__remove') && !e.target.closest('button')) {	//
 				popupClose(e.target.closest('.modal'));
 			}
 		})
@@ -250,7 +250,7 @@ function validateCalculatorForm() {
 	const form = document.getElementById('formCalculator');
 
 	let error = 0;
-	let formReq = document.querySelectorAll('._req');
+	let formReq = form.querySelectorAll('._req');
 
 	for (let i = 0; i < formReq.length; i++) {
 		const el = formReq[i];

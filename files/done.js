@@ -294,12 +294,12 @@ function catalogCategory (key, done) {
 						<div class="header__item">
 							<h3 class="header__link">Контакты</h3>
 							<div class="header__second-list">
-								<a href="tel:+74993905007 " class="header__second-link" target="_blank">+7 (499) 390-50-07 </a>
-								<a href="mailto:hello@shelby-ltd.ru" class="header__second-link"
+								<a href="tel:" class="header__second-link" target="_blank">+7 (999) 999-99-99 </a>
+								<a href="mailto:" class="header__second-link"
 									target="_blank">hello@shelby-ltd.ru</a>
 								<a href="#" class="header__second-link">Заказать звонок</a>
-								<a href="https://wa.me/79258716516" class="header__second-link" target="_blank">WhatsApp</a>
-								<a href="https://t.me/shelbyplay" class="header__second-link" target="_blank">Telegram</a>
+								<a href="https://wa.me/" class="header__second-link" target="_blank">WhatsApp</a>
+								<a href="https://t.me/" class="header__second-link" target="_blank">Telegram</a>
 							</div>
 						</div>
 					</div>
@@ -473,8 +473,8 @@ function catalogCategory (key, done) {
 			<div class="container">
 				<div class="row">
 					<div class="col-12 col-lg-6">
-						<a href="tel:+74993905007" class="tel">+7 (499) 390-50-07</a>
-						<a href="mailto:hello@shelby-ltd.ru" class="mail">hello@shelby-ltd.ru</a>
+						<a href="tel:+" class="tel"></a>
+						<a href="mailto:" class="mail"></a>
 						<p>Работаем с понедельника по пятницу с 09.00 до 18.00</p>
 					</div>
 				</div>
@@ -745,19 +745,19 @@ function catalogCategory (key, done) {
 
 							<div class="form-buy__item">
 								<label for="buyFormName">Ваше имя</label>
-								<input id="buyFormName" type="text" placeholder="Иван Смирнов">
+								<input id="buyFormName" class="_req" type="text" placeholder="Иван Смирнов">
 							</div>
 							<div class="form-buy__item">
 								<label for="buyFormEmail">Почта</label>
-								<input id="buyFormEmail" type="email" placeholder="hello@shelby.com">
+								<input id="buyFormEmail" class="_req" type="email" placeholder="hello@shelby.com">
 							</div>
 							<div class="form-buy__item">
 								<label for="buyFormTel">Телефон</label>
-								<input id="buyFormTel" type="tel" placeholder="+7 000 000 00 00">
+								<input id="buyFormTel" class="_req" type="tel" placeholder="+7 000 000 00 00">
 							</div>
 							<div class="form-buy__item">
 								<label for="buyFormOrgan">Название организации</label>
-								<input id="buyFormOrgan" type="text" placeholder="ООО Шелби Плэйс">
+								<input id="buyFormOrgan" class="_req" type="text" placeholder="ООО Шелби Плэйс">
 							</div>
 	
 							<button type="submit" id="buyFormSubmit">Заказать</button>
@@ -778,7 +778,7 @@ function catalogCategory (key, done) {
 					<button id="callFormSubmit">Заказать звонок</button>
 				</div>
 				<div class="call__form-link">
-					<a href="tel:+74993905007">+7 (499) 390-50-07</a>
+					<a href="tel:"></a>
 				</div>
 				<p class="call__form-agree">Нажимая на кнопку, вы даете согласие на обработку ваших персональных данных.</p>
 			</form>
