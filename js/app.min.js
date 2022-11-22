@@ -734,6 +734,9 @@ function validateBuyForm() {
 				formAddError(el);
 				error++;
 			}
+		} else if (form.querySelector('.cart__products'.innerHTML == '')) {
+			// formAddError(el);
+			error++;
 		}
 
 	}
